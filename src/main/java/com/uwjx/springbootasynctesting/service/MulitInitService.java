@@ -20,23 +20,33 @@ public class MulitInitService {
     public void init() throws Exception{
         log.warn("开始程序");
         List<Future<String>> futures = Lists.newArrayList();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             log.info("开始调用任务：{}" , i);
             Future<String> task1Result =  mulitTaskService.taskOne(i);
             futures.add(task1Result);
         }
+
         while (true){
             boolean allDone = true;
+            int taskSuccessSize = 0;
+            int taskCancelSize = 0;
             for (Future<String> future : futures) {
                 if(!future.isDone()){
                     allDone = false;
+                }else {
+                    taskSuccessSize++;
+                }
+                if(future.isCancelled()){
+                    taskCancelSize++;
                 }
             }
+            log.warn("成功执行个数  : {}" , taskSuccessSize);
+            log.warn("关闭个数  : {}" , taskCancelSize);
             if(allDone){
-                log.warn("全部执行完成 OK");
+                log.warn("全部执行完成 OK  : {}" , taskSuccessSize);
                 break;
             }else {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             }
         }
     }
