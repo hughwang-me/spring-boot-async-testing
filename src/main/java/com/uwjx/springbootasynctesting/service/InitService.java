@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import java.util.concurrent.Future;
 
 @Slf4j
-@Service
+//@Service
 public class InitService {
 
     @Resource
